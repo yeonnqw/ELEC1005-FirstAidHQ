@@ -7,7 +7,7 @@ that coordinates emergency responses, manages volunteers and tracks
 incident reports in real time.
 
 ## Power Apps Link
-https://apps.powerapps.com/play/e/default-7be93ba7-4482-49d0-a512-7c6818096e33/a/5e36fcb6-c1e4-487c-8d1b-fa417b66de9a?tenantId=7be93ba7-4482-49d0-a512-7c6818096e33&hint=6c097c47-f455-4c12-b694-b862b950ac6f&sourcetime=1779708811588
+https://make.powerapps.com/e/default-7be93ba7-4482-49d0-a512-7c6818096e33/canvas/?action=edit&app-id=%2Fproviders%2FMicrosoft.PowerApps%2Fapps%2F5e36fcb6-c1e4-487c-8d1b-fa417b66de9a
 
 https://apps.powerapps.com/play/e/default-7be93ba7-4482-49d0-a512-7c6818096e33/a/cd77b925-c472-4edd-95db-d37eb757dccf?tenantId=7be93ba7-4482-49d0-a512-7c6818096e33&hint=c5252fd7-35a4-4c40-bfb8-c4217f937a54&sourcetime=1779763401673
 
