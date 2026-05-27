@@ -15,7 +15,7 @@ In a community emergency, fast coordination between reporters, volunteers and co
 - Log in and be automatically directed to the correct page based on your role
 - **As a user (reporter):** Submit an emergency report with type, location and description
 - **As a volunteer:** View assigned tasks, see active emergency reports, accept emergencies, mark as declined or resolved
-- **As a coordinator:** View all unassigned, in-progress and resolved incidents in real time, see available volunteers and their distance to each report
+- **As a coordinator:** View all unassigned, in progress and resolved incidents in real time, see available volunteers and their distance to each report
 
 ## Power Apps Link
 https://make.powerapps.com/e/default-7be93ba7-4482-49d0-a512-7c6818096e33/canvas/?action=edit&app-id=%2Fproviders%2FMicrosoft.PowerApps%2Fapps%2F5e36fcb6-c1e4-487c-8d1b-fa417b66de9a
@@ -48,15 +48,13 @@ https://unisydneyedu-my.sharepoint.com/:l:/g/personal/zlin0230_uni_sydney_edu_au
 - Browse all active incidents on the left panel
 - See available volunteers and their distance to each report on the right panel
 
----
-
 ## SharePoint Lists
 | List | Purpose |
 |---|---|
 | Volunteer&Coordinator login | Stores all registered users name, email, role, specialty, availability, location coordinates |
 | CommunityFirstAid | Stores all emergency reports type, reporter, status, assigned volunteer, location, description |
 
----
+
 
 ## App Screens
 | Screen | Who uses it | What it does |
@@ -67,7 +65,7 @@ https://unisydneyedu-my.sharepoint.com/:l:/g/personal/zlin0230_uni_sydney_edu_au
 | volunteer's page | Volunteers | View assigned tasks and active emergencies, accept or resolve |
 | coordinator's page | Coordinators | Monitor all incidents and available volunteers in real time |
 
----
+
 
 ## Common Confusion
 - **"Login doesn't work"**
@@ -85,16 +83,16 @@ https://unisydneyedu-my.sharepoint.com/:l:/g/personal/zlin0230_uni_sydney_edu_au
 - **"Report Emergency button does nothing"**
   → Make sure all required fields are filled in — ReporterName and EmergencyType are required
 
----
+
 
 ## Accessibility
 - All buttons have clear text labels — Login, Register, Accept, Decline, Resolved, Report Emergency
-- Status counts shown as numbers with labels — Unassigned: 4, In Progress: 3, Resolved: 5
-- Role-based navigation automatically sends users to the correct screen — no manual navigation needed
+- Status counts shown as numbers with labels: Unassigned: 4, In Progress: 3, Resolved: 5
+- Role based navigation automatically sends users to the correct screen — no manual navigation needed
 - Form fields have clear placeholder labels for every input
 - Notify() messages confirm actions when emergencies are submitted or status changes
 
----
+
 
 ## Observability — Power Apps Monitor Log
 
@@ -106,16 +104,16 @@ See `PowerAppsTraceEvents.json` in this repository for the full Monitor log.
 Submitting an emergency report triggered a POST request to the CommunityFirstAid SharePoint list. The operation completed successfully with HTTP 201 in 326ms — fast enough for a live emergency reporting system.
 
 **2. Delegation warning on CountRows**
-The formula `CountRows(Filter(CommunityFirstAid, Status.Value = "Resolved"))` was not delegated to SharePoint. Power Apps scanned only 500 rows locally. For the current scale of the app this works correctly, but would return inaccurate counts if the list exceeded 500 rows. This could be fixed by using a server-delegable formula.
+The formula `CountRows(Filter(CommunityFirstAid, Status.Value = "Resolved"))` was not delegated to SharePoint. Power Apps scanned only 500 rows locally. For the current scale of the app this works correctly, but would return inaccurate counts if the list exceeded 500 rows. This could be fixed by using a server delegable formula.
 
 **3. Efficient screen navigation**
 5 user actions were recorded including 3 screen navigations. Navigating between screens did not trigger additional SharePoint network calls — confirming that data is loaded efficiently on app start.
 
----
+
 
 ## Technical Challenges
 
-**Challenge 1 — Role-based navigation**
+**Challenge 1 — Role based navigation**
 The app needed to direct users to different screens based on their role after login. This required storing the role in a variable on login and using an If statement to navigate to the correct screen. Early versions navigated everyone to the same screen which required restructuring the login formula.
 
 **Challenge 2 — SharePoint Choice column syntax**
@@ -124,7 +122,7 @@ Fields like EmergencyType and Status are Choice columns in SharePoint. Power App
 **Challenge 3 — Volunteer distance calculation**
 The coordinator page shows volunteer distance to each report. This required storing latitude and longitude for both the volunteer and the incident and calculating distance using a formula. When GPS coordinates were unavailable the distance showed as unavailable.
 
----
+
 
 ## Reflection
 
@@ -143,13 +141,13 @@ The coordinator page shows volunteer distance to each report. This required stor
 ### Engineering Lessons Learned
 - Define SharePoint column types before building — Choice columns need different syntax
 - Test login and navigation logic first before building content screens
-- Role-based apps need careful variable management to track current user state
+- Role based apps need careful variable management to track current user state
 - Keep forms simple — too many required fields increases report abandonment
 
-### Real-World Perspective
+### Real World Perspective
 This project reflects real emergency dispatch software where speed and reliability are critical. The most surprising challenge was how much the data layer (SharePoint column types and formulas) affected the UI layer — a single wrong syntax broke the entire submit flow. In a real system this app would need offline capability and push notifications, which Power Apps currently does not fully support.
 
----
+
 
 ## Repository Contents
 | File | Description |
