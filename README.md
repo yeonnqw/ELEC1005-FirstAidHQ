@@ -1,5 +1,5 @@
 # Daemon Hunters: Community First Aid Response App
-**ELEC1005 Assignment 2: Lam Vo, Zhehao Lin, Zipeng Song**
+**ELEC1005 Assignment 2: Lam Vo (hovo0435@uni.sydney.edu.au), Zhehao Lin, Zipeng Song**
 
 ## What is this?
 A Microsoft Power Apps canvas app that connects community members, volunteers and coordinators to respond to first aid emergencies in real time — backed by Microsoft SharePoint as a live database.
