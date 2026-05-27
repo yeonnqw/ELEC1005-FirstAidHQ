@@ -113,13 +113,13 @@ The formula `CountRows(Filter(CommunityFirstAid, Status.Value = "Resolved"))` wa
 
 ## Technical Challenges
 
-**Challenge 1 — Role based navigation**
+**Challenge 1: Role based navigation**
 The app needed to direct users to different screens based on their role after login. This required storing the role in a variable on login and using an If statement to navigate to the correct screen. Early versions navigated everyone to the same screen which required restructuring the login formula.
 
-**Challenge 2 — SharePoint Choice column syntax**
+**Challenge 2: SharePoint Choice column syntax**
 Fields like EmergencyType and Status are Choice columns in SharePoint. Power Apps requires these to be written as `{Value: "text"}` in Patch formulas rather than plain strings. This caused type mismatch errors that were resolved by checking column types in SharePoint List Settings.
 
-**Challenge 3 — Volunteer distance calculation**
+**Challenge 3: Volunteer distance calculation**
 The coordinator page shows volunteer distance to each report. This required storing latitude and longitude for both the volunteer and the incident and calculating distance using a formula. When GPS coordinates were unavailable the distance showed as unavailable.
 
 
