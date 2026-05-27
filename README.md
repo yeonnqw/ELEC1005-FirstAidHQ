@@ -1,4 +1,4 @@
-# Daemon Hunters — Community First Aid Response App
+# Daemon Hunters: Community First Aid Response App
 **ELEC1005 Assignment 2: Lam Vo, Zhehao Lin, Zipeng Song**
 
 ## What is this?
