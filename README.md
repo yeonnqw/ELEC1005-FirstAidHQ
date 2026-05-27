@@ -53,8 +53,8 @@ https://unisydneyedu-my.sharepoint.com/:l:/g/personal/zlin0230_uni_sydney_edu_au
 ## SharePoint Lists
 | List | Purpose |
 |---|---|
-| Volunteer&Coordinator login | Stores all registered users — name, email, role, specialty, availability, location coordinates |
-| CommunityFirstAid | Stores all emergency reports — type, reporter, status, assigned volunteer, location, description |
+| Volunteer&Coordinator login | Stores all registered users name, email, role, specialty, availability, location coordinates |
+| CommunityFirstAid | Stores all emergency reports type, reporter, status, assigned volunteer, location, description |
 
 ---
 
