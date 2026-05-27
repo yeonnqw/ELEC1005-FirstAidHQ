@@ -43,24 +43,9 @@ https://unisydneyedu-my.sharepoint.com/:l:/g/personal/zlin0230_uni_sydney_edu_au
   → Check that all SharePoint lists are connected in the Data panel in Power Apps
 
 ## Screens
-| Screen | Description |
-|---|---|
-| scrLogin | Register and sign in |
-| scrDashboard | Live incidents, volunteers, checklist |
-| scrReport | Submit new emergency to SharePoint |
-| scrIncidents | View all, assign self, resolve |
-| scrAssignVolunteer | Assign other volunteers |
-| scrVolunteers | View all volunteer status |
-| scrRoster | Weekly shift schedule |
-| scrProfile | Stats and certifications |
-| scrSettings | Preferences and sign out |
+
 
 ## Accessibility
-- All buttons have clear text labels
-- Colour is not the only way to convey status — badges also show text
-- Notify() messages confirm every action (reported, assigned, resolved)
-- Large touch targets on all buttons (minimum 34px height)
-- Simple navigation — maximum 2 steps to complete any task
+
 
 ## Monitor Log
-See `monitor-log.json` in this repository for Power Apps Monitor observability data.
