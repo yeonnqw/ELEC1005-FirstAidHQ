@@ -94,13 +94,13 @@ https://unisydneyedu-my.sharepoint.com/:l:/g/personal/zlin0230_uni_sydney_edu_au
 
 
 
-## Observability — Power Apps Monitor Log
+## Observability: Power Apps Monitor Log
 
 See `PowerAppsTraceEvents.json` in this repository for the full Monitor log.
 
 ### Key Observations
 
-**1. SharePoint write (createRow) — 326ms**
+**1. SharePoint write (createRow)**
 Submitting an emergency report triggered a POST request to the CommunityFirstAid SharePoint list. The operation completed successfully with HTTP 201 in 326ms — fast enough for a live emergency reporting system.
 
 **2. Delegation warning on CountRows**
