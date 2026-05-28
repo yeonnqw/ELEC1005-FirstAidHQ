@@ -6,7 +6,7 @@
 
 ### What worked as expected
 The core concept of the app translated well from design to implementation. 
-Role-based navigation worked correctly — after login, the app automatically 
+Role-based navigation worked correctly after login, the app automatically 
 directed users to the correct screen based on their role (Volunteer or 
 Coordinator). The emergency report form submitted data to SharePoint reliably, 
 and the coordinator dashboard displayed live incident counts and available 
@@ -19,7 +19,7 @@ user data from incident data made queries simpler and kept the app fast.
 ### What didn't work as expected
 The original design assumed that all form fields would be plain text. In 
 reality, SharePoint Choice columns (EmergencyType, Status, Availability) 
-required a completely different syntax in Power Apps — `{Value: "text"}` 
+required a completely different syntax in Power Apps `{Value: "text"}` 
 instead of plain strings. This caused type mismatch errors across multiple 
 screens and took significant time to debug.
 
@@ -31,7 +31,7 @@ to display "unavailable".
 ### Changes made from original design
 - The Register screen was originally combined with the Login screen but was 
   separated into two screens for clarity and better user flow
-- Volunteer filtering was simplified — originally planned to filter by 
+- Volunteer filtering was simplified originally planned to filter by 
   specialty and location, but was simplified to filter by availability status
 - A GPS location feature was added during development as an enhancement that 
   was not in the original wireframes
@@ -40,7 +40,7 @@ to display "unavailable".
 
 ## 2. Technical Challenges
 
-### Challenge 1 — SharePoint Choice column syntax
+### Challenge 1: SharePoint Choice column syntax
 **Problem:** Power Apps Patch formulas require Choice columns to use record 
 syntax `{Value: "text"}` rather than plain strings. Fields like EmergencyType, 
 Status and Availability are all Choice columns in SharePoint. Initially all 
@@ -57,7 +57,7 @@ of `ThisItem.Status`.
 Apps formulas. Plain text columns and Choice columns look identical in the 
 SharePoint list view but behave completely differently in formulas.
 
-### Challenge 2 — Role-based navigation after login
+### Challenge 2: Role-based navigation after login
 **Problem:** The app needed to send users to different screens based on their 
 role after logging in. Early versions used a simple Navigate formula that sent 
 everyone to the same screen. The challenge was reading the user's role from 
@@ -73,7 +73,7 @@ that variable.
 of operations in Power Apps OnSelect formulas matters — Set must come before 
 Navigate.
 
-### Challenge 3 — GPS coordinates and distance calculation
+### Challenge 3: GPS coordinates and distance calculation
 **Problem:** The coordinator page was designed to show volunteer distance to 
 each emergency report. This required GPS coordinates for both the volunteer 
 and the incident location. On many devices `Location.Latitude` and 
@@ -103,14 +103,14 @@ the Patch formula.
 ### What Monitor showed
 The Power Apps Monitor log (PowerAppsTraceEvents.json) revealed:
 
-- **createRow completed in 326ms** — the emergency report submission to 
+- **createRow completed in 326ms** the emergency report submission to 
   SharePoint was fast and returned HTTP 201 successfully
-- **Delegation warning on CountRows** — the formula 
+- **Delegation warning on CountRows** the formula 
   `CountRows(Filter(CommunityFirstAid, Status.Value = "Resolved"))` was not 
   delegated to SharePoint, meaning only 500 rows were scanned locally. For 
   the current scale of the app this works correctly but would fail on larger 
   datasets
-- **Navigation was efficient** — moving between screens did not trigger 
+- **Navigation was efficient** moving between screens did not trigger 
   additional SharePoint network calls, confirming that data loaded on app 
   start was reused correctly
 
@@ -149,9 +149,7 @@ be redistributed without a clear handover. In future projects, documenting
 what each person is working on in Jira from the start would make handovers 
 much smoother.
 
----
-
-## 5. Real-World Perspective
+## 5. Real World Perspective
 
 ### How this reflects real software engineering
 This project reflected several aspects of real software engineering practice. 
@@ -161,7 +159,7 @@ systematic debugging. This mirrors the challenges of API integration in
 professional projects, where two systems that are designed to work together 
 still require significant effort to connect correctly.
 
-The role-based access control feature (different screens for volunteers vs 
+The role based access control feature (different screens for volunteers vs 
 coordinators) reflects a common pattern in real enterprise software where 
 different user types have different permissions and views of the same data.
 
