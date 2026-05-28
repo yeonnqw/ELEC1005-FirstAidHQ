@@ -57,7 +57,8 @@ of `ThisItem.Status`.
 Apps formulas. Plain text columns and Choice columns look identical in the 
 SharePoint list view but behave completely differently in formulas.
 
-### Challenge 2: Role-based navigation after login
+### Challenge 2: Role 
+based navigation after login
 **Problem:** The app needed to send users to different screens based on their 
 role after logging in. Early versions used a simple Navigate formula that sent 
 everyone to the same screen. The challenge was reading the user's role from 
@@ -70,7 +71,7 @@ formula then used an If statement to navigate to the correct screen based on
 that variable.
 
 **Lesson learned:** Variables must be set before navigation happens. The order 
-of operations in Power Apps OnSelect formulas matters — Set must come before 
+of operations in Power Apps OnSelect formulas matters Set must come before 
 Navigate.
 
 ### Challenge 3: GPS coordinates and distance calculation
@@ -96,7 +97,7 @@ than they registered could not log in. This was an unexpected usability issue
 that required communicating exact registration details to users.
 
 Testing the report form showed that submitting without an EmergencyType 
-selected caused a silent failure — the form appeared to submit but no row was 
+selected caused a silent failure the form appeared to submit but no row was 
 created in SharePoint. This was fixed by adding a validation check before 
 the Patch formula.
 
@@ -126,7 +127,7 @@ The Power Apps Monitor log (PowerAppsTraceEvents.json) revealed:
 ## 4. Engineering Lessons Learned
 
 **Plan data types before building**
-The most time-consuming errors came from not planning SharePoint column types 
+The most time consuming errors came from not planning SharePoint column types 
 before writing Power Apps formulas. In future projects, creating a data 
 dictionary that specifies each column name, type and accepted values before 
 writing any formula would save significant debugging time.
@@ -153,7 +154,7 @@ much smoother.
 
 ### How this reflects real software engineering
 This project reflected several aspects of real software engineering practice. 
-Integration between two platforms — Power Apps and SharePoint — introduced 
+Integration between two platforms Power Apps and SharePoint introduced 
 compatibility issues that required careful reading of documentation and 
 systematic debugging. This mirrors the challenges of API integration in 
 professional projects, where two systems that are designed to work together 
@@ -173,7 +174,7 @@ an entire feature. The difference between `Status = "Resolved"` and
 `Status.Value = "Resolved"` looks trivial but caused complete failure of the 
 coordinator dashboard filters. In a real emergency response system, this kind 
 of silent failure could have serious consequences — highlighting how important 
-thorough testing and validation are even in small-scale applications.
+thorough testing and validation are even in small scale applications.
 
 The delegation warning from Monitor was also surprising. The app appeared to 
 work correctly during testing, but Monitor revealed that it was only scanning 
