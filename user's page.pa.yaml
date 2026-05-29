@@ -1,0 +1,739 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  user's page:
+    Properties:
+      Fill: =RGBA(255, 251, 254, 1)
+      LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+      OnVisible: =NewForm(Form1)
+    Children:
+      - Grid3:
+          Control: GroupContainer@1.5.0
+          Variant: GridLayout
+          Properties:
+            Fill: =RGBA(255, 251, 254, 1)
+            Height: =Parent.Height
+            LayoutGap: =16
+            LayoutGridColumns: =10
+            LayoutGridRows: =8
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
+            Width: =Parent.Width
+          Children:
+            - HeaderContainer4:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGridColumnEnd: =11
+                  LayoutGridColumnStart: =2
+                  LayoutGridRowEnd: =2
+                  LayoutGridRowStart: =1
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  X: =40
+                  Y: =40
+            - SidebarContainer4:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGridColumnEnd: =2
+                  LayoutGridColumnStart: =1
+                  LayoutGridRowEnd: =9
+                  LayoutGridRowStart: =1
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  X: =40
+                  Y: =40
+            - MainContainer4:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGridColumnEnd: =11
+                  LayoutGridColumnStart: =2
+                  LayoutGridRowEnd: =9
+                  LayoutGridRowStart: =2
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  X: =40
+                  Y: =40
+                Children:
+                  - Form1:
+                      Control: Form@2.4.4
+                      Layout: Vertical
+                      Properties:
+                        BorderColor: =RGBA(245, 245, 245, 1)
+                        DataSource: |
+                          =CommunityFirstAid
+                        DefaultMode: =FormMode.New
+                        Item: =Defaults(CommunityFirstAid)
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        NumberOfColumns: =1
+                        OnSuccess: |-
+                          =Patch(
+                              CommunityFirstAid,
+                              Form1.LastSubmit,
+                              {
+                                  Latitude: varLat,
+                                  Longitude: varLng
+                              }
+                          );
+
+                          Notify("Emergency report submitted!", NotificationType.Success);
+                          ResetForm(Form1)
+                      Children:
+                        - ReporterName_DataCard1:
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            IsLocked: true
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="ReporterName"
+                              Default: =ThisItem.ReporterName
+                              DisplayName: =DataSourceInfo([@CommunityFirstAid],DataSourceInfo.DisplayName,ReporterName)
+                              MaxLength: =DataSourceInfo([@CommunityFirstAid], DataSourceInfo.MaxLength, ReporterName)
+                              Required: =false
+                              Update: =DataCardValue2.Value
+                              Width: =1183
+                              X: =0
+                              Y: =0
+                            Children:
+                              - DataCardKey2:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue2:
+                                  Control: TextInput@0.0.54
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DisplayMode: =Parent.DisplayMode
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Required: =Parent.Required
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Value: =Parent.Default
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey2.Y + DataCardKey2.Height + 4
+                              - ErrorMessage2:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue2.Y + DataCardValue2.Height
+                              - StarVisible2:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey2.Y
+                        - EmergencyType_DataCard1:
+                            Control: TypedDataCard@1.0.7
+                            Variant: ComboBoxEdit
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="EmergencyType"
+                              Default: =ThisItem.EmergencyType
+                              DisplayName: =DataSourceInfo([@CommunityFirstAid],DataSourceInfo.DisplayName,EmergencyType)
+                              Required: =false
+                              Update: =DataCardValue3.Selected
+                              Width: =1183
+                              X: =0
+                              Y: =1
+                            Children:
+                              - DataCardKey3:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue3:
+                                  Control: ComboBox@0.0.51
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DefaultSelectedItems: =[Parent.Default]
+                                    DisplayMode: =Parent.DisplayMode
+                                    InputTextPlaceholder: ="查找项"
+                                    Items: =Choices([@CommunityFirstAid].EmergencyType)
+                                    Required: =Parent.Required
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey3.Y + DataCardKey3.Height + 4
+                              - ErrorMessage3:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue3.Y + DataCardValue3.Height
+                              - StarVisible3:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =20
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey3.Y
+                        - 'Location: City_DataCard1':
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            IsLocked: true
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="Location_x003a_City"
+                              Default: |-
+                                =ThisItem.'Location: City'
+                              DisplayName: |-
+                                =DataSourceInfo([@CommunityFirstAid],DataSourceInfo.DisplayName,'Location: City')
+                              MaxLength: |-
+                                =DataSourceInfo([@CommunityFirstAid], DataSourceInfo.MaxLength, 'Location: City')
+                              Required: =false
+                              Update: =DataCardValue1.Value
+                              Width: =1183
+                              X: =0
+                              Y: =2
+                            Children:
+                              - DataCardKey1:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue1:
+                                  Control: TextInput@0.0.54
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DisplayMode: =Parent.DisplayMode
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Required: =Parent.Required
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Value: =Parent.Default
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey1.Y + DataCardKey1.Height + 4
+                              - ErrorMessage1:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue1.Y + DataCardValue1.Height
+                              - StarVisible1:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey1.Y
+                        - 'Location: Street_DataCard1':
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            IsLocked: true
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="Location_x003a_Street"
+                              Default: |-
+                                =ThisItem.'Location: Street'
+                              DisplayName: |-
+                                =DataSourceInfo([@CommunityFirstAid],DataSourceInfo.DisplayName,'Location: Street')
+                              MaxLength: |-
+                                =DataSourceInfo([@CommunityFirstAid], DataSourceInfo.MaxLength, 'Location: Street')
+                              Required: =false
+                              Update: =DataCardValue4.Value
+                              Width: =1183
+                              X: =0
+                              Y: =3
+                            Children:
+                              - DataCardKey4:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue4:
+                                  Control: TextInput@0.0.54
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DisplayMode: =Parent.DisplayMode
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Required: =Parent.Required
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Value: =Parent.Default
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey4.Y + DataCardKey4.Height + 4
+                              - ErrorMessage5:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue4.Y + DataCardValue4.Height
+                              - StarVisible5:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey4.Y
+                        - 'Location: Postcode_DataCard1':
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            IsLocked: true
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="Location_x003a_Postcode"
+                              Default: |-
+                                =ThisItem.'Location: Postcode'
+                              DisplayName: |-
+                                =DataSourceInfo([@CommunityFirstAid],DataSourceInfo.DisplayName,'Location: Postcode')
+                              MaxLength: |-
+                                =DataSourceInfo([@CommunityFirstAid], DataSourceInfo.MaxLength, 'Location: Postcode')
+                              Required: =false
+                              Update: =DataCardValue5.Value
+                              Width: =1183
+                              X: =0
+                              Y: =4
+                            Children:
+                              - DataCardKey5:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue5:
+                                  Control: TextInput@0.0.54
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DisplayMode: =Parent.DisplayMode
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Required: =Parent.Required
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Value: =Parent.Default
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey5.Y + DataCardKey5.Height + 4
+                              - ErrorMessage6:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue5.Y + DataCardValue5.Height
+                              - StarVisible6:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey5.Y
+                        - 'Location: PlaceName_DataCard1':
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            IsLocked: true
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="Location_x003a_PlaceName"
+                              Default: |-
+                                =ThisItem.'Location: PlaceName'
+                              DisplayName: |-
+                                =DataSourceInfo([@CommunityFirstAid],DataSourceInfo.DisplayName,'Location: PlaceName')
+                              MaxLength: |-
+                                =DataSourceInfo([@CommunityFirstAid], DataSourceInfo.MaxLength, 'Location: PlaceName')
+                              Required: =false
+                              Update: =DataCardValue11.Value
+                              Width: =1183
+                              X: =0
+                              Y: =5
+                            Children:
+                              - DataCardKey11:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue11:
+                                  Control: TextInput@0.0.54
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DisplayMode: =Parent.DisplayMode
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Required: =Parent.Required
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Value: =Parent.Default
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey11.Y + DataCardKey11.Height + 4
+                              - ErrorMessage8:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue11.Y + DataCardValue11.Height
+                              - StarVisible8:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey11.Y
+                        - Description (Optional)_DataCard1:
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="Description_x0028_Optional_x0029"
+                              Default: =ThisItem.'Description (Optional)'
+                              DisplayName: =DataSourceInfo([@CommunityFirstAid],DataSourceInfo.DisplayName,'Description (Optional)')
+                              MaxLength: =DataSourceInfo([@CommunityFirstAid], DataSourceInfo.MaxLength, 'Description (Optional)')
+                              Required: =false
+                              Update: =DataCardValue10.Value
+                              Width: =1183
+                              X: =0
+                              Y: =6
+                            Children:
+                              - DataCardKey10:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue10:
+                                  Control: TextInput@0.0.54
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DisplayMode: =Parent.DisplayMode
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Required: =Parent.Required
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Value: =Parent.Default
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey10.Y + DataCardKey10.Height + 4
+                              - ErrorMessage4:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue10.Y + DataCardValue10.Height
+                              - StarVisible4:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey10.Y
+                        - CreatedTime_DataCard1:
+                            Control: TypedDataCard@1.0.7
+                            Variant: DateEdit
+                            IsLocked: true
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="CreatedTime"
+                              Default: =ThisItem.CreatedTime
+                              DisplayName: =DataSourceInfo([@CommunityFirstAid],DataSourceInfo.DisplayName,CreatedTime)
+                              Required: =false
+                              Update: =DataCardValue13.SelectedDate
+                              Width: =1183
+                              X: =0
+                              Y: =7
+                            Children:
+                              - DataCardKey13:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue13:
+                                  Control: DatePicker@0.0.46
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DisplayMode: =Parent.DisplayMode
+                                    EndDate: =Date(Year(Today())+100, 12, 31)
+                                    Placeholder: ="选择日期..."
+                                    SelectedDate: =Parent.Default
+                                    StartDate: =Date(1900, 1, 1)
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey13.Y + DataCardKey13.Height + 4
+                              - ErrorMessage7:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue13.Y + DataCardValue13.Height
+                              - StarVisible7:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey13.Y
+                  - Button1:
+                      Control: ModernButton@1.0.0
+                      Properties:
+                        Height: =38
+                        OnSelect: |-
+                          =Set(varLat, Location.Latitude);
+                          Set(varLng, Location.Longitude);
+                          SubmitForm(Form1)
+                        RadiusBottomLeft: =30
+                        RadiusBottomRight: =30
+                        RadiusTopLeft: =30
+                        RadiusTopRight: =30
+                        Size: =20
+                        Text: ="Report Emergency"
+                        Width: =508
+                        X: =40
+                        Y: =40
+      - Icon3:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =RGBA(215, 58, 60, 1)
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =60
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(40, 134, 222, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Information
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =52
+            X: =607
+            Y: =24
+      - Text4:
+          Control: ModernText@1.0.0
+          Properties:
+            Height: =66
+            Size: =30
+            Text: ="Report Emergency"
+            Width: =426
+            X: =676
+            Y: =18
+      - Icon4:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: |-
+              =If(
+                  currentPage = "User",
+                  RGBA(0, 120, 212, 1),
+                  Color.Gray
+              )
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Person
+            OnSelect: |-
+              =If(
+                  IsBlank(currentUser),
+
+                  Set(currentPage, "Register");
+                  Navigate(Register),
+
+                  currentRole = "Volunteer",
+
+                  Set(currentPage, "Volunteer");
+                  Navigate('volunteer''s page'),
+
+                  Set(currentPage, "Coordinator");
+                  Navigate('coordinator''s page')
+              )
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            X: =42
+            Y: =328
+      - Icon5:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: |-
+              =If(
+                  currentPage = "User",
+                  Color.Gray,
+                  RGBA(0, 120, 212, 1)
+              )
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Publish
+            OnSelect: |-
+              =Set(currentPage, "User");
+              Navigate('user''s page')
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            X: =42
+            Y: =131
+      - Icon2:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: |-
+              =If(
+                  IsBlank(currentUser),
+                  Color.Gray,
+                  RGBA(0, 120, 212, 1)
+              )
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Leave
+            OnSelect: |-
+              =If(
+                  !IsBlank(currentUser),
+
+                  Set(currentUser, Blank());
+                  Set(currentRole, Blank());
+                  Set(currentPage, "User");
+                  Navigate('user''s page')
+              )
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            X: =42
+            Y: =525
