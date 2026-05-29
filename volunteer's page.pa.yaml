@@ -1,0 +1,667 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  volunteer's page:
+    Properties:
+      Fill: =RGBA(255, 255, 255, 1)
+      LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+    Children:
+      - Grid1:
+          Control: GroupContainer@1.5.0
+          Variant: GridLayout
+          Properties:
+            Fill: =RGBA(255, 251, 254, 1)
+            Height: =Parent.Height
+            LayoutGap: =16
+            LayoutGridColumns: =10
+            LayoutGridRows: =8
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
+            Width: =Parent.Width
+          Children:
+            - HeaderContainer2:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGridColumnEnd: =11
+                  LayoutGridColumnStart: =2
+                  LayoutGridRowEnd: =4
+                  LayoutGridRowStart: =2
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  X: =40
+                  Y: =40
+                Children:
+                  - Gallery1_2:
+                      Control: Gallery@2.15.0
+                      Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                      Properties:
+                        BorderColor: =RGBA(245, 245, 245, 1)
+                        Items: |-
+                          =Filter(
+                              CommunityFirstAid,
+                              AssignedVolunteer = currentUser.Name &&
+                              (
+                                  AssignmentStatus.Value = "Pending" ||
+                                  AssignmentStatus.Value = "Accepted"
+                              )
+                          )
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        TemplateSize: =160
+                      Children:
+                        - Image1_2:
+                            Control: Image@2.2.3
+                            Properties:
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledFill: =RGBA(0, 0, 0, 0)
+                              FocusedBorderThickness: =4
+                              Height: =72
+                              HoverBorderColor: =RGBA(0, 0, 0, 0)
+                              HoverFill: =RGBA(0, 0, 0, 0)
+                              OnSelect: =Select(Parent)
+                              PressedBorderColor: =RGBA(0, 0, 0, 0)
+                              PressedFill: =RGBA(0, 0, 0, 0)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Width: =72
+                              X: =51
+                              Y: =44
+                        - Title1_2:
+                            Control: Label@2.5.1
+                            Properties:
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(50, 49, 48, 1)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                              Height: =111
+                              OnSelect: =Select(Parent)
+                              PaddingBottom: =0
+                              PaddingLeft: =12
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: |-
+                                ="🚨 " & ThisItem.EmergencyType.Value &
+                                Char(10) &
+                                "📍 " & ThisItem.'Location: PlaceName' & ", " & ThisItem.'Location: Street' & ", " & ThisItem.'Location: City' & " " & ThisItem.'Location: Postcode' &
+                                Char(10) &
+                                "📝 " & ThisItem.'Description (Optional)' &
+                                Char(10) &
+                                "👤 " & ThisItem.ReporterName &
+                                Char(10) &
+                                "🕒 " & Text(ThisItem.CreatedTime, "dd/mm/yyyy")
+                              VerticalAlign: =VerticalAlign.Top
+                              Width: =895
+                              X: =123
+                              Y: =24
+                        - Rectangle1_2:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              Fill: =RGBA(0, 120, 212, 1)
+                              Height: =Parent.TemplateHeight - Separator1_2.Height
+                              OnSelect: =Select(Parent)
+                              Visible: =ThisItem.IsSelected
+                              Width: =4
+                        - Button3_1:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Height: =41
+                              OnSelect: |-
+                                =Set(selectedTask, ThisItem);
+
+                                IfError(
+                                    If(
+                                        selectedTask.AssignmentStatus.Value = "Pending" &&
+                                        CountRows(
+                                            Filter(
+                                                CommunityFirstAid,
+                                                AssignedVolunteer = User().FullName &&
+                                                Status.Value = "In Progress"
+                                            )
+                                        ) > 0,
+
+                                        Notify("You already have an active task.", NotificationType.Warning),
+
+                                        selectedTask.AssignmentStatus.Value = "Pending",
+
+                                        Patch(
+                                            CommunityFirstAid,
+                                            selectedTask,
+                                            {
+                                                Status: {Value: "In Progress"},
+                                                AssignmentStatus: {Value: "Accepted"},
+                                                AssignedVolunteer: User().FullName
+                                            }
+                                        );
+
+                                        Notify("Assignment accepted!", NotificationType.Success),
+
+                                        selectedTask.Status.Value = "In Progress" &&
+                                        selectedTask.AssignedVolunteer = User().FullName,
+
+                                        Patch(
+                                            'Volunteer&Coordinator login',
+                                            LookUp(
+                                                'Volunteer&Coordinator login',
+                                                Email = currentUser.Email
+                                            ),
+                                            {
+                                                Availability: {Value: "Available"}
+                                            }
+                                        );
+
+                                        Patch(
+                                            CommunityFirstAid,
+                                            selectedTask,
+                                            {
+                                                Status: {Value: "Resolved"},
+                                                AssignmentStatus: {Value: "Resolved"}
+                                            }
+                                        );
+
+                                        Notify("Task resolved!", NotificationType.Success)
+                                    ),
+
+                                    Notify("Something went wrong. Please refresh.", NotificationType.Warning)
+                                );
+
+                                Refresh('Volunteer&Coordinator login');
+                                Refresh(CommunityFirstAid);
+                              RadiusBottomLeft: =40
+                              RadiusBottomRight: =40
+                              RadiusTopLeft: =40
+                              RadiusTopRight: =40
+                              Size: =25
+                              Text: |-
+                                =If(
+                                    ThisItem.AssignmentStatus.Value = "Pending",
+                                    "Accept",
+                                    "Resolved?"
+
+                                )
+                              Width: =138
+                              X: =939
+                              Y: =55
+                        - NextArrow1_2:
+                            Control: Classic/Icon@2.5.0
+                            Properties:
+                              AccessibleLabel: =Self.Tooltip
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(166, 166, 166, 1)
+                              DisabledBorderColor: =RGBA(56, 56, 56, 1)
+                              DisabledColor: =RGBA(119, 119, 119, 1)
+                              Height: =65
+                              Icon: =Icon.Waypoint
+                              OnSelect: |-
+                                =If(
+                                    !IsBlank(ThisItem.Latitude) &&
+                                    !IsBlank(ThisItem.Longitude),
+
+                                    Launch(
+                                        "https://www.google.com/maps?q=" &
+                                        ThisItem.Latitude & "," & ThisItem.Longitude
+                                    ),
+
+                                    Notify(
+                                        "Location coordinates are not available.",
+                                        NotificationType.Error
+                                    )
+                                )
+                              PaddingBottom: =16
+                              PaddingLeft: =16
+                              PaddingRight: =16
+                              PaddingTop: =16
+                              Tooltip: ="查看项详细信息"
+                              Width: =65
+                              X: =1106
+                              Y: =44
+                        - Separator1_2:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              Height: =8
+                              OnSelect: =Select(Parent)
+                              Width: =Parent.TemplateWidth
+                              Y: =Parent.TemplateHeight - Self.Height
+                        - Button6:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Height: =41
+                              OnSelect: |-
+                                =Patch(
+                                    CommunityFirstAid,
+                                    ThisItem,
+                                    {
+                                        Status: {Value: "Unassigned"},
+                                        AssignedVolunteer: Blank(),
+                                        AssignmentStatus: {Value: "Declined"}
+                                    }
+                                );
+
+                                Patch(
+                                    'Volunteer&Coordinator login',
+                                    currentUser,
+                                    {
+                                        Availability: {Value: "Available"}
+                                    }
+                                );
+
+                                Refresh(CommunityFirstAid);
+                                Refresh('Volunteer&Coordinator login');
+                                Notify("Assignment declined.", NotificationType.Success);
+                              RadiusBottomLeft: =50
+                              RadiusBottomRight: =50
+                              RadiusTopLeft: =50
+                              RadiusTopRight: =50
+                              Size: =25
+                              Text: ="Decline"
+                              Width: =138
+                              X: =765
+                              Y: =55
+            - SidebarContainer1:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGridColumnEnd: =2
+                  LayoutGridColumnStart: =1
+                  LayoutGridRowEnd: =9
+                  LayoutGridRowStart: =1
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  X: =40
+                  Y: =40
+            - MainContainer2:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGridColumnEnd: =11
+                  LayoutGridColumnStart: =2
+                  LayoutGridRowEnd: =9
+                  LayoutGridRowStart: =5
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  X: =40
+                  Y: =40
+                Children:
+                  - Gallery1:
+                      Control: Gallery@2.15.0
+                      Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                      Properties:
+                        BorderColor: =RGBA(245, 245, 245, 1)
+                        Items: |-
+                          =Filter(
+                              CommunityFirstAid,
+                              Status.Value = "Unassigned" ||
+                              Status.Value = "In Progress"&&
+                              AssignedVolunteer = User().FullName
+                          )
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        TemplateSize: =160
+                      Children:
+                        - Image1:
+                            Control: Image@2.2.3
+                            Properties:
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledFill: =RGBA(0, 0, 0, 0)
+                              FocusedBorderThickness: =4
+                              Height: =72
+                              HoverBorderColor: =RGBA(0, 0, 0, 0)
+                              HoverFill: =RGBA(0, 0, 0, 0)
+                              OnSelect: =Select(Parent)
+                              PressedBorderColor: =RGBA(0, 0, 0, 0)
+                              PressedFill: =RGBA(0, 0, 0, 0)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Width: =72
+                              X: =51
+                              Y: =44
+                        - Title1:
+                            Control: Label@2.5.1
+                            Properties:
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(50, 49, 48, 1)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                              Height: =111
+                              OnSelect: =Select(Parent)
+                              PaddingBottom: =0
+                              PaddingLeft: =12
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: |-
+                                ="🚨 " & ThisItem.EmergencyType.Value &
+                                Char(10) &
+                                "📍 " & ThisItem.'Location: PlaceName' & ", " & ThisItem.'Location: Street' & ", " & ThisItem.'Location: City' & " " & ThisItem.'Location: Postcode' &
+                                Char(10) &
+                                "📝 " & ThisItem.'Description (Optional)' &
+                                Char(10) &
+                                "👤 " & ThisItem.ReporterName &
+                                Char(10) &
+                                "🕒 " & Text(ThisItem.CreatedTime, "dd/mm/yyyy")
+                              VerticalAlign: =VerticalAlign.Top
+                              Width: =895
+                              X: =123
+                              Y: =24
+                        - NextArrow1:
+                            Control: Classic/Icon@2.5.0
+                            Properties:
+                              AccessibleLabel: =Self.Tooltip
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(166, 166, 166, 1)
+                              DisabledBorderColor: =RGBA(56, 56, 56, 1)
+                              DisabledColor: =RGBA(119, 119, 119, 1)
+                              Height: =65
+                              Icon: =Icon.Waypoint
+                              OnSelect: |-
+                                =If(
+                                    !IsBlank(ThisItem.Latitude) &&
+                                    !IsBlank(ThisItem.Longitude),
+
+                                    Launch(
+                                        "https://www.google.com/maps?q=" &
+                                        ThisItem.Latitude & "," & ThisItem.Longitude
+                                    ),
+
+                                    Notify(
+                                        "Location coordinates are not available.",
+                                        NotificationType.Error
+                                    )
+                                )
+                              PaddingBottom: =16
+                              PaddingLeft: =16
+                              PaddingRight: =16
+                              PaddingTop: =16
+                              Tooltip: ="查看项详细信息"
+                              Width: =65
+                              X: =Parent.TemplateWidth - Self.Width - 12
+                              Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+                        - Separator1:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              Height: =8
+                              OnSelect: =Select(Parent)
+                              Width: =Parent.TemplateWidth
+                              Y: =Parent.TemplateHeight - Self.Height
+                        - Rectangle1:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              Fill: =RGBA(0, 120, 212, 1)
+                              Height: =Parent.TemplateHeight - Separator1.Height
+                              OnSelect: =Select(Parent)
+                              Visible: =ThisItem.IsSelected
+                              Width: =4
+                        - Button3:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              DisplayMode: |-
+                                =If(
+                                    ThisItem.Status.Value = "In Progress" &&
+                                    ThisItem.AssignedVolunteer <> User().FullName,
+                                    DisplayMode.Disabled,
+                                    DisplayMode.Edit
+                                )
+                              Height: =41
+                              OnSelect: |-
+                                =Set(selectedTask, ThisItem);
+
+                                IfError(
+                                    If(
+                                        selectedTask.Status.Value = "Unassigned" &&
+                                        CountRows(
+                                            Filter(
+                                                CommunityFirstAid,
+                                                AssignedVolunteer = User().FullName &&
+                                                Status.Value = "In Progress"
+                                            )
+                                        ) > 0,
+
+                                        Notify("You already have an active task.", NotificationType.Warning),
+
+                                        selectedTask.Status.Value = "Unassigned",
+
+                                        Patch(
+                                            CommunityFirstAid,
+                                            selectedTask,
+                                            {
+                                                Status: {Value: "In Progress"},
+                                                AssignmentStatus: {Value: "Accepted"},
+                                                AssignedVolunteer: User().FullName
+                                            }
+                                        );
+
+                                        Patch(
+                                            'Volunteer&Coordinator login',
+                                            LookUp(
+                                                'Volunteer&Coordinator login',
+                                                Email = currentUser.Email
+                                            ),
+                                            {
+                                                Availability: {Value: "Unavailable"}
+                                            }
+                                        );
+
+                                        Notify("Assignment accepted!", NotificationType.Success),
+
+                                        selectedTask.Status.Value = "In Progress" &&
+                                        selectedTask.AssignedVolunteer = User().FullName,
+
+                                        Patch(
+                                            'Volunteer&Coordinator login',
+                                            LookUp(
+                                                'Volunteer&Coordinator login',
+                                                Email = currentUser.Email
+                                            ),
+                                            {
+                                                Availability: {Value: "Available"}
+                                            }
+                                        );
+
+                                        Patch(
+                                            CommunityFirstAid,
+                                            selectedTask,
+                                            {
+                                                Status: {Value: "Resolved"},
+                                                AssignmentStatus: {Value: "Resolved"}
+                                            }
+                                        );
+
+                                        Notify("Task resolved!", NotificationType.Success)
+                                    ),
+
+                                    Notify("Something went wrong. Please refresh.", NotificationType.Warning)
+                                );
+
+                                Refresh('Volunteer&Coordinator login');
+                                Refresh(CommunityFirstAid);
+                              RadiusBottomLeft: =40
+                              RadiusBottomRight: =40
+                              RadiusTopLeft: =40
+                              RadiusTopRight: =40
+                              Size: =25
+                              Text: |
+                                =If(
+                                    ThisItem.Status.Value = "Unassigned",
+                                    "Accept",
+                                    "Resolved?"
+                                )
+                              Width: =138
+                              X: =939
+                              Y: =55
+            - Container2:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  LayoutGridColumnEnd: =11
+                  LayoutGridColumnStart: =2
+                  LayoutGridRowEnd: =2
+                  LayoutGridRowStart: =1
+                  X: =40
+                  Y: =40
+                Children:
+                  - Text9:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Height: =55
+                        Size: =25
+                        Text: |-
+                          ="Assigned Tasks: " & CountRows(Gallery1_2.AllItems)
+                        Width: =262
+                        X: =525
+                        Y: =12
+            - Container3:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  LayoutGridColumnEnd: =11
+                  LayoutGridColumnStart: =2
+                  LayoutGridRowEnd: =5
+                  LayoutGridRowStart: =4
+                  X: =40
+                  Y: =40
+                Children:
+                  - Text8:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Height: =48
+                        Size: =25
+                        Text: |-
+                          ="Active Emergency Reports: " & CountRows(Gallery1.AllItems)
+                        Width: =385
+                        X: =462
+                        Y: =15
+      - Icon7:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: |-
+              =If(
+                  currentPage = "Volunteer",
+                  Color.Gray,
+                  RGBA(0, 120, 212, 1)
+              )
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Person
+            OnSelect: |-
+              =If(
+                  currentRole = "Volunteer",
+
+                  Set(currentPage, "Volunteer");
+                  Navigate('volunteer''s page'),
+
+                  Set(currentPage, "Coordinator");
+                  Navigate('coordinator''s page')
+              )
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            X: =42
+            Y: =328
+      - Icon6:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: |-
+              =If(
+                  currentPage = "User",
+                  Color.Gray,
+                  RGBA(0, 120, 212, 1)
+              )
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Publish
+            OnSelect: |-
+              =Set(currentPage,"User");
+              Navigate('user''s page')
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            X: =42
+            Y: =131
+      - Icon14:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: |-
+              =If(
+                  IsBlank(currentUser),
+                  Color.Gray,
+                  RGBA(0, 120, 212, 1)
+              )
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Leave
+            OnSelect: |-
+              =If(
+                  !IsBlank(currentUser),
+
+                  Set(currentUser, Blank());
+                  Set(currentRole, Blank());
+                  Set(currentPage, "User");
+                  Navigate('user''s page')
+              )
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            X: =42
+            Y: =525
